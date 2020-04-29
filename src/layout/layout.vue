@@ -1,10 +1,14 @@
 <template>
-    <h1>sssssssssssss</h1>
+    <div>
+    <sidebar></sidebar>
+    </div>
 </template>
 
 <script>
+    import Sidebar from "./Sidebar/sidebar";
     export default {
-        name: "layout"
+        name: "layout",
+        components: {Sidebar},
     }
 </script>
 
