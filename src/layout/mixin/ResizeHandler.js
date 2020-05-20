@@ -5,7 +5,6 @@ const WIDTH = 992 // refer to Bootstrap's responsive design
 
 export default {
   watch: {
-    // eslint-disable-next-line no-unused-vars
     $route(route) {
       if (this.device === 'mobile' && this.sidebar.opened) {
         store.dispatch('app/closeSideBar', { withoutAnimation: false })
