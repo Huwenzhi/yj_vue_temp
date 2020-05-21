@@ -1,8 +1,8 @@
 <template>
     <div>
-        <yj-table-tools @searchContentSend="searchContentRec"/>
+        <yj-table-tools :row-header="rowHeader" @searchContentSend="searchContentRec" @filterHeard="filterHeard" @onRefresh="onRefresh"/>
         <yj-table :search-content="searchContent" :table-size="tableSize" :is-show-row-do-something="isShowRowDoSomething" :is-can-sort="isCanSort"
-                  :row-header="rowHeader" :data="data" :is-show-index="isShowIndex"
+                  :row-header="rowHeaderSend" :data="data" :is-show-index="isShowIndex"
                   :is-show-selection="isShowSelection" ref="yjtable"/>
     </div>
 </template>
@@ -67,12 +67,28 @@
         data(){
           return{
               searchContent:'',//传递过来的模糊查询的内容
+              rowHeaderSend:[],//转发的头部
           }
         },
+        mounted() {
+            this.init()
+        },
         methods:{
+            //拦截转发头信息
+            init(){
+              this.rowHeaderSend=this.rowHeader
+            },
             //搜索的内容
             searchContentRec(val){
                 this.searchContent=val
+            },
+            //过滤后的头信息 转发到table中
+            filterHeard(val){
+                this.rowHeaderSend=val
+            },
+            //暴露的刷新方法
+            onRefresh(){
+                this.$emit('onRefresh')
             }
         }
     }

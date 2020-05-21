@@ -69,7 +69,8 @@
                     <el-button
                             size="mini"
                             class="filter-item"
-                            icon="el-icon-refresh"/>
+                            icon="el-icon-refresh"
+                    @click="onRefresh"/>
 
                     <el-popover
                             placement="bottom-end"
@@ -84,9 +85,14 @@
                                     aria-hidden="true"
                             />
                         </el-button>
-                        <el-checkbox>
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">
                             全选
                         </el-checkbox>
+                        <div style="margin: 15px 0;"></div>
+                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                            <el-checkbox v-for="item in copyHeard" :label="item" :key="item.prop">{{item.label}}
+                            </el-checkbox>
+                        </el-checkbox-group>
                     </el-popover>
 
                 </el-button-group>
@@ -100,28 +106,57 @@
 <script>
     export default {
         name: "YjTableTools",
+        props: {
+
+            // 表头数据
+            rowHeader: {
+                type: Array,
+                default: () => {
+                    return []
+                }
+            },
+        },
         data() {
             return {
                 input: '',
-                rowsList: [{
-                    type: "danger",
-                    btnText: 'cejjj',
-                }],
+                rowsList: [],
                 searchToggle: false,
-                permission: {
-                    add: ['admin', 'user:add'],
-                    edit: ['admin', 'user:edit'],
-                    del: ['admin', 'user:del']
-                },
+                copyHeard: [],//头部备份
+                checkAll: true,//是否全选
+                checkedCities: [],//选中的数据
+                isIndeterminate: false
+
             }
         },
-
+        mounted() {
+            this.init()
+        },
         methods: {
+            init() {
+                this.copyHeard = this.rowHeader
+                this.checkedCities = this.copyHeard
+            },
             toggleSearch() {
                 this.searchToggle = !this.searchToggle
             },
             searchContent(val) {
                 this.$emit('searchContentSend', val)
+            },
+            handleCheckAllChange(val) {
+                this.checkedCities = (val ? this.copyHeard : []);
+                this.isIndeterminate = false;
+                this.$emit('filterHeard',this.checkedCities)
+            },
+            handleCheckedCitiesChange(value) {
+                let checkedCount = value.length;
+                this.checkAll = checkedCount === this.copyHeard.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < this.copyHeard.length;
+                this.$emit('filterHeard',value)
+
+            },
+            //
+            onRefresh(){
+                this.$emit('onRefresh')
             }
         }
     }

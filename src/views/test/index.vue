@@ -8,17 +8,17 @@
 <!--    >复制</el-button>-->
 
 
-    <yj-table-with-tools-expand :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true">
-        <el-button
-                        slot="right"
-                        class="filter-item"
-                        size="mini"
-                        type="primary"
-                        icon="el-icon-plus"
-                >复制</el-button>
-    </yj-table-with-tools-expand>
+<!--    <yj-table-with-tools-expand @onRefresh="onRefresh"  :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true">-->
+<!--        <el-button-->
+<!--                        slot="right"-->
+<!--                        class="filter-item"-->
+<!--                        size="mini"-->
+<!--                        type="primary"-->
+<!--                        icon="el-icon-plus"-->
+<!--                >复制</el-button>-->
+<!--    </yj-table-with-tools-expand>-->
 
-<!--    <yj-table-with-tools :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>-->
+    <yj-table-with-tools @onRefresh="onRefresh" :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>
 <!--    <yj-table :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>-->
 </template>
 <script>
@@ -64,6 +64,9 @@
                     {prop: "name", label: "名称"},
                     {prop: "address", label: "地址"},
                 ]
+            },
+            onRefresh(){
+                this.$message.success('onRefresh')
             }
         }
     }

@@ -32,7 +32,6 @@
         删除
       </el-button>
       <el-button
-
               class="filter-item"
               size="mini"
               type="warning"
@@ -58,6 +57,7 @@
                             class="filter-item"
                             icon="el-icon-search"/>
                     <el-button
+                            @click="onRefresh"
                             size="mini"
                             class="filter-item"
                             icon="el-icon-refresh"/>
@@ -81,7 +81,7 @@
                         </el-checkbox>
                         <div style="margin: 15px 0;"></div>
                         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                            <el-checkbox v-for="city in cities" :label="city" :key="city.prop">{{city.label}}
+                            <el-checkbox v-for="item in copyHeard" :label="item" :key="item.prop">{{item.label}}
                             </el-checkbox>
                         </el-checkbox-group>
                     </el-popover>
@@ -99,6 +99,7 @@
 
 <script>
     import YjTable from "./YjTable";
+
     export default {
         name: "YjTableWithToolsExpand",
         components: {YjTable},
@@ -158,17 +159,14 @@
             return {
                 rowsList: [],
                 input: '',//模糊查询的内容
-                copyHeardSend: [],
-                copyHeard: [],
-                checkAll: true,
-                checkedCities: [],
-                cities: [],
+                copyHeardSend: [],//拦截pors数据的头部 再转发
+                copyHeard: [],//头部备份
+                checkAll: true,//是否全选
+                checkedCities: [],//选中的数据
                 isIndeterminate: false
             }
         },
-        watch: {
-
-        },
+        watch: {},
         mounted() {
             this.init()
         },
@@ -176,7 +174,6 @@
             init() {
                 this.copyHeardSend = this.rowHeader
                 this.copyHeard = this.rowHeader
-                this.cities = this.copyHeard
                 this.checkedCities = this.copyHeard
             },
             handleCheckAllChange(val) {
@@ -186,10 +183,14 @@
             },
             handleCheckedCitiesChange(value) {
                 let checkedCount = value.length;
-                this.checkAll = checkedCount === this.cities.length;
-                this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+                this.checkAll = checkedCount === this.copyHeard.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < this.copyHeard.length;
                 this.copyHeardSend = value
 
+            },
+            //暴露的刷新方法
+            onRefresh(){
+              this.$emit('onRefresh')
             }
 
         }
