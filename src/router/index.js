@@ -80,10 +80,10 @@ export const constantRoutes = [
                 meta: {title: '测试按钮', icon: 'tree'}
             },
             {
-                path: 'tree',
-                name: 'Tree',
-                component: () => import('@/views/tree/index'),
-                meta: {title: '岗位', icon: 'tree'}
+                path: 'tabletest',
+                name: 'tabletest',
+                component: () => import('@/views/tabletest/index'),
+                meta: {title: '测试动态列', icon: 'tree'}
             },
             {
                 path: 'tree',

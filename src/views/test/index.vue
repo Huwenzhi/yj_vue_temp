@@ -1,14 +1,34 @@
 <template>
-    <yj-table-with-tools :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>
+<!--    <el-button-->
+<!--            slot="left"-->
+<!--            class="filter-item"-->
+<!--            size="mini"-->
+<!--            type="primary"-->
+<!--            icon="el-icon-plus"-->
+<!--    >复制</el-button>-->
+
+
+    <yj-table-with-tools-expand :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true">
+        <el-button
+                        slot="right"
+                        class="filter-item"
+                        size="mini"
+                        type="primary"
+                        icon="el-icon-plus"
+                >复制</el-button>
+    </yj-table-with-tools-expand>
+
+<!--    <yj-table-with-tools :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>-->
 <!--    <yj-table :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>-->
 </template>
 <script>
     import YjTable from "../commonview/YjTable";
     import YjTableWithTools from "../commonview/YjTableWithTools";
+    import YjTableWithToolsExpand from "../commonview/YjTableWithToolsExpand";
 
     export default {
         name: 'Index',
-        components: {YjTableWithTools, YjTable},
+        components: {YjTableWithToolsExpand, YjTableWithTools, YjTable},
         data() {
             return {
                 mini:'medium',

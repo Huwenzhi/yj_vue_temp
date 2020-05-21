@@ -20,7 +20,7 @@
               size="mini"
               type="primary"
               icon="el-icon-plus"
-              @click="onAdd()"
+
       >
         新增
       </el-button>
@@ -29,7 +29,7 @@
               size="mini"
               type="success"
               icon="el-icon-edit"
-              @click="onEdit()"
+
       >
         修改
       </el-button>
@@ -39,13 +39,8 @@
               class="filter-item"
               type="danger"
               icon="el-icon-delete"
-              size="mini"
-              @click="onDel"
-      >
-        删除
-      </el-button>
+              size="mini"> 删除 </el-button>
       <el-button
-
               class="filter-item"
               size="mini"
               type="warning"
@@ -60,8 +55,9 @@
 
     </span>
             <div class="crud-opts-right">
-                <el-input size="mini" placeholder="搜索" v-model="input" clearable="true"  prefix-icon="el-icon-search" style="width: auto;"/>
-                <el-button-group >
+                <el-input size="mini" placeholder="搜索" v-model="input" @input="searchContent" clearable
+                          prefix-icon="el-icon-search" style="width: auto;margin-right: 5px"/>
+                <el-button-group>
 
                     <el-button
                             @click="toggleSearch()"
@@ -92,7 +88,6 @@
                             全选
                         </el-checkbox>
                     </el-popover>
-                    <!--                    </div>-->
 
                 </el-button-group>
             </div>
@@ -107,7 +102,7 @@
         name: "YjTableTools",
         data() {
             return {
-                input:'',
+                input: '',
                 rowsList: [{
                     type: "danger",
                     btnText: 'cejjj',
@@ -124,6 +119,9 @@
         methods: {
             toggleSearch() {
                 this.searchToggle = !this.searchToggle
+            },
+            searchContent(val) {
+                this.$emit('searchContentSend', val)
             }
         }
     }
