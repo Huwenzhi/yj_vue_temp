@@ -89,11 +89,11 @@
                 </el-button-group>
             </div>
         </div>
-        <yj-table ref="yjtable" :search-content="input" :table-size="tableSize"
+        <yj-table :is-border="isBorder" :is-stripe="isStripe" ref="yjtable" :search-content="input" :table-size="tableSize"
                   :is-show-row-do-something="isShowRowDoSomething"
                   :is-can-sort="isCanSort"
                   :row-header="copyHeardSend" :data="data" :is-show-index="isShowIndex"
-                  :is-show-selection="isShowSelection"/>
+                  :is-show-selection="isShowSelection" @handleEdit="handleEdit" @handleDelete="handleDelete" @handleCurrentChange="handleCurrentChange" @handleCurrentChange="handleCurrentChange" :is-single="isSingle"/>
     </div>
 </template>
 
@@ -104,6 +104,26 @@
         name: "YjTableWithToolsExpand",
         components: {YjTable},
         props: {
+            isSingle:{
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
+            //是否斑马显示
+            isStripe: {
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
+            //是否带边框
+            isBorder: {
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
             // 表格数据
             data: {
                 type: Array,
@@ -186,11 +206,39 @@
                 this.checkAll = checkedCount === this.copyHeard.length;
                 this.isIndeterminate = checkedCount > 0 && checkedCount < this.copyHeard.length;
                 this.copyHeardSend = value
-
             },
             //暴露的刷新方法
             onRefresh(){
               this.$emit('onRefresh')
+            },
+            //新增
+            onAdd(){
+                this.$emit('onAdd')
+            },
+            //新增
+            onEdit(){
+                this.$emit('onEdit')
+            },
+            //新增
+            onDel(){
+                this.$emit('onDel')
+            },
+            handleEdit(index,val){
+                this.$emit('handleEdit',index,val)
+            },
+            handleDelete(index,val){
+                this.$emit('handleDelete',index,val)
+            },
+            //多选
+            handleSelectionChange(val) {
+                this.$emit('handleSelectionChange',val)
+            },
+            //单选
+            handleCurrentChange(val){
+                if (!this.isSingle){
+                    this.$refs.multipleTable.toggleRowSelection(val)
+                }
+                this.$emit('handleCurrentChange',val)
             }
 
         }

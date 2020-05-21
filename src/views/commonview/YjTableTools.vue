@@ -20,7 +20,7 @@
               size="mini"
               type="primary"
               icon="el-icon-plus"
-
+              @click="onAdd"
       >
         新增
       </el-button>
@@ -29,12 +29,12 @@
               size="mini"
               type="success"
               icon="el-icon-edit"
-
+              @click="onEdit"
       >
         修改
       </el-button>
       <el-button
-
+              @click="onDel"
               slot="reference"
               class="filter-item"
               type="danger"
@@ -157,6 +157,18 @@
             //
             onRefresh(){
                 this.$emit('onRefresh')
+            },
+            //新增
+            onAdd(){
+                this.$emit('onAdd')
+            },
+            //新增
+            onEdit(){
+                this.$emit('onEdit')
+            },
+            //新增
+            onDel(){
+                this.$emit('onDel')
             }
         }
     }

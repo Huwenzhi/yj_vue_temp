@@ -1,7 +1,10 @@
 <!--base 表格的封装-->
 <template>
-    <el-table :size="tableSize" :data="tableDataCon">
-        <el-table-column type="selection" width="50" v-if='isShowSelection'></el-table-column>
+    <el-table ref="multipleTable" :border="isBorder" :stripe="isStripe" :size="tableSize" :data="tableDataCon"
+              @selection-change="handleSelectionChange"
+              highlight-current-row
+              @current-change="handleCurrentChange">
+        <el-table-column type="selection" width="50" v-if='isShowSelection&&!isSingle'></el-table-column>
         <el-table-column type="index" width="50" label="序号" v-if='isShowIndex'></el-table-column>
 
         <el-table-column v-for="(col,index) in rowHeader" :key="index" :prop="col.prop" :label="col.label"
@@ -46,6 +49,12 @@
 
 
         props: {
+            isSingle:{
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
             // 表格数据
             data: {
                 type: Array,
@@ -68,6 +77,20 @@
                 }
             }, //显示序号
             isShowSelection: {
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
+            //是否斑马显示
+            isStripe: {
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
+            //是否带边框
+            isBorder: {
                 type: Boolean,
                 default: () => {
                     return false
@@ -162,6 +185,26 @@
                 } else {
                     return val
                 }
+
+            },
+            //单行编辑
+            handleEdit(index,val){
+                this.$emit('handleEdit',index,val)
+            },
+            //单行删改
+            handleDelete(index,val){
+                this.$emit('handleDelete',index,val)
+            },
+            //多选
+            handleSelectionChange(val) {
+                this.$emit('handleSelectionChange',val)
+            },
+            //单选
+            handleCurrentChange(val){
+                if (!this.isSingle){
+                    this.$refs.multipleTable.toggleRowSelection(val)
+                }
+                this.$emit('handleCurrentChange',val)
 
             }
         }

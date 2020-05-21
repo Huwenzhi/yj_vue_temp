@@ -18,7 +18,7 @@
 <!--                >复制</el-button>-->
 <!--    </yj-table-with-tools-expand>-->
 
-    <yj-table-with-tools @onRefresh="onRefresh" :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>
+    <yj-table-with-tools :is-single="false" @handleEdit="handleEdit(index,val)" @handleDelete="handleDelete(index,val)" is-border="true" is-stripe="true" @onRefresh="onRefresh" :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>
 <!--    <yj-table :table-size="mini" :is-show-row-do-something="true" :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" :is-show-selection="true"/>-->
 </template>
 <script>
@@ -67,6 +67,12 @@
             },
             onRefresh(){
                 this.$message.success('onRefresh')
+            },
+            handleEdit(index,val){
+                console.log(index ,val,'----')
+            },
+            handleDelete(index,val){
+                console.log(index ,val,'----')
             }
         }
     }

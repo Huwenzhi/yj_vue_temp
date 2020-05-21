@@ -1,9 +1,9 @@
 <template>
     <div>
         <yj-table-tools :row-header="rowHeader" @searchContentSend="searchContentRec" @filterHeard="filterHeard" @onRefresh="onRefresh"/>
-        <yj-table :search-content="searchContent" :table-size="tableSize" :is-show-row-do-something="isShowRowDoSomething" :is-can-sort="isCanSort"
+        <yj-table :is-border="isBorder" :is-stripe="isStripe" :search-content="searchContent" :table-size="tableSize" :is-show-row-do-something="isShowRowDoSomething" :is-can-sort="isCanSort"
                   :row-header="rowHeaderSend" :data="data" :is-show-index="isShowIndex"
-                  :is-show-selection="isShowSelection" ref="yjtable"/>
+                  :is-show-selection="isShowSelection" ref="yjtable" @handleEdit="handleEdit"  @handleDelete="handleDelete" @handleCurrentChange="handleCurrentChange" @handleCurrentChange="handleCurrentChange" :is-single="isSingle"/>
     </div>
 </template>
 
@@ -15,6 +15,26 @@
         name: "YjTableWithTools",
         components: {YjTableTools, YjTable},
         props: {
+            isSingle:{
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
+            //是否斑马显示
+            isStripe: {
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
+            //是否带边框
+            isBorder: {
+                type: Boolean,
+                default: () => {
+                    return false
+                }
+            },
             // 表格数据
             data: {
                 type: Array,
@@ -89,6 +109,36 @@
             //暴露的刷新方法
             onRefresh(){
                 this.$emit('onRefresh')
+            },
+            //新增
+            onAdd(){
+                this.$emit('onAdd')
+            },
+            //新增
+            onEdit(){
+                this.$emit('onEdit')
+            },
+            //新增
+            onDel(){
+                this.$emit('onDel')
+            },
+            handleEdit(index,val){
+                this.$emit('handleEdit',index,val)
+            },
+            handleDelete(index,val){
+                this.$emit('handleDelete',index,val)
+            },
+            //多选
+            handleSelectionChange(val) {
+                this.$emit('handleSelectionChange',val)
+            },
+            //单选
+            handleCurrentChange(val){
+                if (!this.isSingle){
+                    this.$refs.multipleTable.toggleRowSelection(val)
+                }
+                this.$emit('handleCurrentChange',val)
+
             }
         }
     }
