@@ -86,15 +86,15 @@ export const constantRoutes = [
                 meta: {title: '测试动态列', icon: 'tree'}
             },
             {
-                path: 'tree',
-                name: 'Tree',
-                component: () => import('@/views/tree/index'),
-                meta: {title: '班组', icon: 'tree'}
+                path: 'rightplan',
+                name: 'rightplan',
+                component: () => import('@/views/rightplan/index'),
+                meta: {title: '侧边栏', icon: 'tree'}
             },{
-                path: 'tree',
-                name: 'Tree',
-                component: () => import('@/views/tree/index'),
-                meta: {title: '人员', icon: 'tree'}
+                path: 'slot',
+                name: 'slot',
+                component: () => import('@/views/newslot/index'),
+                meta: {title: '插槽', icon: 'tree'}
             },
 
         ]

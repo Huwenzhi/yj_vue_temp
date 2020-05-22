@@ -1,7 +1,13 @@
 <template>
     <div>
-
-        <div class="crud-opts">
+        <!--工具栏-->
+        <div class="head-container">
+            <div v-if="searchToggle">
+                <!-- 搜索 -->
+                <slot name="top"/>
+            </div>
+            </div >
+        <div  class="crud-opts">
             <span class="crud-opts-left">
       <!--左侧插槽-->
       <slot name="left"/>
@@ -14,6 +20,7 @@
         新增
       </el-button>
       <el-button
+              :disabled="selectDatas.length !== 1"
               class="filter-item"
               size="mini"
               type="success"
@@ -22,7 +29,7 @@
         修改
       </el-button>
       <el-button
-
+              :disabled="selectDatas.length === 0"
               slot="reference"
               class="filter-item"
               type="danger"
@@ -51,6 +58,7 @@
                 <el-button-group>
 
                     <el-button
+                            @click="onSearch"
                             size="mini"
                             plain
                             type="info"
@@ -89,11 +97,13 @@
                 </el-button-group>
             </div>
         </div>
-        <yj-table :is-border="isBorder" :is-stripe="isStripe" ref="yjtable" :search-content="input" :table-size="tableSize"
+
+        <yj-table  :is-border="isBorder" :is-stripe="isStripe" ref="yjtable" :search-content="input" :table-size="tableSize"
                   :is-show-row-do-something="isShowRowDoSomething"
                   :is-can-sort="isCanSort"
                   :row-header="copyHeardSend" :data="data" :is-show-index="isShowIndex"
-                  :is-show-selection="isShowSelection" @handleEdit="handleEdit" @handleDelete="handleDelete" @handleCurrentChange="handleCurrentChange" @handleCurrentChange="handleCurrentChange" :is-single="isSingle"/>
+                  :is-show-selection="isShowSelection" @handleEdit="handleEdit" @handleDelete="handleDelete" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange" :is-single="isSingle"/>
+
     </div>
 </template>
 
@@ -177,13 +187,16 @@
 
         data() {
             return {
+                searchToggle:false,
+                showSettings:true,
                 rowsList: [],
                 input: '',//模糊查询的内容
                 copyHeardSend: [],//拦截pors数据的头部 再转发
                 copyHeard: [],//头部备份
                 checkAll: true,//是否全选
                 checkedCities: [],//选中的数据
-                isIndeterminate: false
+                isIndeterminate: false,
+                selectDatas:[],//列选中的事件
             }
         },
         watch: {},
@@ -206,6 +219,9 @@
                 this.checkAll = checkedCount === this.copyHeard.length;
                 this.isIndeterminate = checkedCount > 0 && checkedCount < this.copyHeard.length;
                 this.copyHeardSend = value
+            },
+            onSearch(){
+                this.searchToggle = !this.searchToggle
             },
             //暴露的刷新方法
             onRefresh(){
@@ -231,16 +247,23 @@
             },
             //多选
             handleSelectionChange(val) {
+                if (!this.isSingle){
+                    this.selectDatas=[]
+                    this.selectDatas=val
+                }
+                console.log(val)
                 this.$emit('handleSelectionChange',val)
             },
             //单选
             handleCurrentChange(val){
-                if (!this.isSingle){
-                    this.$refs.multipleTable.toggleRowSelection(val)
+                if (this.isSingle){
+                    this.selectDatas=[]
+                    this.selectDatas.push(val)
+                    // this.$refs.yjtable.toggleRowSelection(val)
                 }
                 this.$emit('handleCurrentChange',val)
-            }
 
+            }
         }
 
     }

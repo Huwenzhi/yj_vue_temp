@@ -201,9 +201,9 @@
             },
             //单选
             handleCurrentChange(val){
-                if (!this.isSingle){
-                    this.$refs.multipleTable.toggleRowSelection(val)
-                }
+                // if (!this.isSingle){
+                //     this.$refs.multipleTable.toggleRowSelection(val)
+                // }
                 this.$emit('handleCurrentChange',val)
 
             }

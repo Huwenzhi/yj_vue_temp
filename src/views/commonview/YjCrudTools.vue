@@ -2,10 +2,11 @@
     <!--工具栏-->
     <div class="head-container">
         <div v-if="searchToggle">
-            <!-- 搜索 -->
+            <!-- 上方搜素的插槽 -->
             <slot name="top"/>
         </div>
         <div class="crud-opts">
+
     <span class="crud-opts-left">
       <!--左侧插槽-->
       <slot name="left"/>
@@ -14,20 +15,14 @@
               size="mini"
               type="primary"
               icon="el-icon-plus"
-              @click="onAdd"
-      >
-        新增
-      </el-button>
+              @click="onAdd">新增 </el-button>
       <el-button
               :disabled="selectDatas.length !== 1"
               class="filter-item"
               size="mini"
               type="success"
               icon="el-icon-edit"
-              @click="onEdit"
-      >
-        修改
-      </el-button>
+              @click="onEdit"> 修改</el-button>
       <el-button
               :disabled="selectDatas.length === 0"
               @click="onDel"
@@ -40,13 +35,11 @@
               class="filter-item"
               size="mini"
               type="warning"
-              icon="el-icon-download"
-
-      >导出</el-button>
+              icon="el-icon-download">导出</el-button>
         <el-button-group v-for="(item, index) in rowsList" :key="index">
 
 </el-button-group>
-
+        <!--        右侧的插槽 适合放一些按钮-->
       <slot name="right"/>
 
     </span>
@@ -66,7 +59,7 @@
                             size="mini"
                             class="filter-item"
                             icon="el-icon-refresh"
-                    @click="onRefresh"/>
+                            @click="onRefresh"/>
 
                     <el-popover
                             placement="bottom-end"
@@ -76,15 +69,13 @@
                                 slot="reference"
                                 size="mini"
                                 icon="el-icon-s-grid">
-                            <i
-                                    class="fa fa-caret-down"
-                                    aria-hidden="true"
-                            />
+                            <i class="fa fa-caret-down"
+                                    aria-hidden="true"/>
                         </el-button>
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">
                             全选
                         </el-checkbox>
-                        <div style="margin: 15px 0;"></div>
+                        <div style="margin: 5px 0;"></div>
                         <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
                             <el-checkbox v-for="item in copyHeard" :label="item" :key="item.prop">{{item.label}}
                             </el-checkbox>
@@ -101,7 +92,7 @@
 
 <script>
     export default {
-        name: "YjTableTools",
+        name: "YjCrudTools",
         props: {
 
             // 表头数据
@@ -157,7 +148,7 @@
                 this.$emit('filterHeard',value)
 
             },
-            //
+            //刷新
             onRefresh(){
                 this.$emit('onRefresh')
             },
@@ -165,14 +156,15 @@
             onAdd(){
                 this.$emit('onAdd')
             },
-            //新增
+            //修改
             onEdit(){
                 this.$emit('onEdit')
             },
-            //新增
+            //删除
             onDel(){
                 this.$emit('onDel')
-            }
+            },
+            //导出
         }
     }
 </script>

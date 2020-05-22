@@ -1,23 +1,23 @@
 <template>
     <div>
-
-        <yj-table-tools :select-datas="selectDatas" :row-header="rowHeader" @searchContentSend="searchContentRec" @filterHeard="filterHeard" @onRefresh="onRefresh">
-           <slot name="top" slot="top"/>
-
-        </yj-table-tools>
+        <yj-crud-tools :select-datas="selectDatas" :row-header="rowHeader" @searchContentSend="searchContentRec" @filterHeard="filterHeard" @onRefresh="onRefresh">
+            <slot name="top" slot="top"/>
+            <slot name="left" slot="left"/>
+            <slot name="right" slot="right"/>
+        </yj-crud-tools>
         <yj-table :is-border="isBorder" :is-stripe="isStripe" :search-content="searchContent" :table-size="tableSize" :is-show-row-do-something="isShowRowDoSomething" :is-can-sort="isCanSort"
                   :row-header="rowHeaderSend" :data="data" :is-show-index="isShowIndex"
                   :is-show-selection="isShowSelection" ref="yjtable" @handleEdit="handleEdit"  @handleDelete="handleDelete" @handleCurrentChange="handleCurrentChange" @handleSelectionChange="handleSelectionChange" :is-single="isSingle"/>
+
     </div>
 </template>
 
 <script>
+    import YjCrudTools from "./YjCrudTools";
     import YjTable from "./YjTable";
-    import YjTableTools from "./YjTableTools";
-
     export default {
-        name: "YjTableWithTools",
-        components: {YjTableTools, YjTable},
+        name: "YjCrudTable",
+        components: {YjTable, YjCrudTools},
         props: {
             isSingle:{
                 type: Boolean,
@@ -89,11 +89,11 @@
             }
         },
         data(){
-          return{
-              searchContent:'',//传递过来的模糊查询的内容
-              rowHeaderSend:[],//转发的头部
-              selectDatas:[],//选中的数据
-          }
+            return{
+                searchContent:'',//传递过来的模糊查询的内容
+                rowHeaderSend:[],//转发的头部
+                selectDatas:[],//选中的数据
+            }
         },
         mounted() {
             this.init()
@@ -101,7 +101,7 @@
         methods:{
             //拦截转发头信息
             init(){
-              this.rowHeaderSend=this.rowHeader
+                this.rowHeaderSend=this.rowHeader
             },
             //搜索的内容
             searchContentRec(val){
