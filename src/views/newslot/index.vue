@@ -18,9 +18,9 @@
         data() {
             return {
                 mini: 'medium',
-                heards: [{prop: "date", label: "日期", sortable: true},
-                    {prop: "name", label: "名称", sortable: 'true'},
-                    {prop: "address", label: "地址", sortable: "true"}],
+                heards: [{prop: "date", label: "日期", },
+                    {prop: "name", label: "名称", },
+                    {prop: "address", label: "地址",}],
                 tableData: [{
                     date: '2016-05-02',
                     name: '王小虎',
@@ -41,7 +41,7 @@
             }
         },
         beforeMount() {
-            this.getTableHeard()
+            // this.getTableHeard()
         },
         methods: {
             getTableHeard() {
