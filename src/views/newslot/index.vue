@@ -1,11 +1,12 @@
 <template>
-    <yj-crud-table @onRefresh="onRefresh" :table-size="mini" :is-show-row-do-something="true"
-                   :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true"
-                   :is-show-selection="true">
+    <yj-crud-table  @onRefresh="onRefresh" :table-size="mini" :is-show-row-do-something="true"
+                   :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" @onAdd="onAdd"
+                   :is-show-selection="true" @onSave="onSave" @onCancel="onCancel">
         <input slot="top"></input>
-        <yj-search-tools slot="left">
+        <yj-search-tools  v-show="!showForm" slot="left">
             <el-button slot="search">测试插槽</el-button>
         </yj-search-tools>
+      <input slot="bottom" v-show="showForm"></input>
     </yj-crud-table>
 </template>
 
@@ -17,6 +18,7 @@
         components: {YjSearchTools, YjCrudTable},
         data() {
             return {
+                showForm:false,
                 mini: 'medium',
                 heards: [{prop: "date", label: "日期", },
                     {prop: "name", label: "名称", },
@@ -65,7 +67,21 @@
                     this.clickNotClose = false
                 }
                 this.clickNotClose = true
-            }
+            },
+          onAdd(){
+              this.showForm=true
+          } ,
+          onEdit(){
+              this.showForm=true
+          },
+          //保存的回调事件
+          onSave(){
+            this.showForm=false
+          },
+          //取消的回调事件
+          onCancel(){
+            this.showForm=false
+          }
         }
 
     }

@@ -1,6 +1,6 @@
 <!--base 表格的封装-->
 <template>
-  <el-table ref="multipleTable" :border="isBorder" :stripe="isStripe" :size="tableSize" :data="tableDataCon"
+  <el-table v-show="!isShowForm" ref="multipleTable" :border="isBorder" :stripe="isStripe" :size="tableSize" :data="tableDataCon"
             @selection-change="handleSelectionChange"
             highlight-current-row
             @current-change="handleCurrentChange"
@@ -52,6 +52,12 @@
 
 
     props: {
+      isShowForm: {
+        type: Boolean,
+        default: () => {
+          return false
+        }
+      },
       isSingle:{
         type: Boolean,
         default: () => {

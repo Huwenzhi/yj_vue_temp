@@ -1,12 +1,16 @@
 <template>
   <div>
-    <yj-crud-tools @onAdd="onAdd" @onEdit="onEdit" @onDel="onDel" :select-datas="selectDatas" :row-header="rowHeader"
-                   @searchContentSend="searchContentRec" @filterHeard="filterHeard" @onRefresh="onRefresh">
-      <slot name="top" slot="top"/>
-      <slot name="left" slot="left"/>
-      <slot name="right" slot="right"/>
+    <yj-crud-tools :is-show-form="isShowForm" @onAdd="onAdd" @onEdit="onEdit" @onDel="onDel" :select-datas="selectDatas" :row-header="rowHeader"
+                   @searchContentSend="searchContentRec" @filterHeard="filterHeard" @onRefresh="onRefresh" @onSave="onSave" @onCancel="onCancel">
+      <slot name="top" slot="top" v-show="!isShowForm"/>
+      <slot name="left" slot="left" v-show="isShowForm"/>
+      <slot name="right" slot="right" v-show="!isShowForm"/>
     </yj-crud-tools>
-    <yj-table :is-border="isBorder" :is-stripe="isStripe" :search-content="searchContent" :table-size="tableSize"
+    <div :is-show-form="isShowForm">
+      <slot name="bottom"/>
+    </div>
+
+    <yj-table :is-show-form="isShowForm" :is-border="isBorder" :is-stripe="isStripe" :search-content="searchContent" :table-size="tableSize"
               :is-show-row-do-something="isShowRowDoSomething" :is-can-sort="isCanSort"
               :row-header="rowHeaderSend" :data="data" :is-show-index="isShowIndex"
               :is-show-selection="isShowSelection" ref="yjtable" @handleEdit="handleEdit" @handleDelete="handleDelete"
@@ -24,6 +28,12 @@
     name: "YjCrudTable",
     components: {YjTable, YjCrudTools},
     props: {
+      isShowForm: {
+        type: Boolean,
+        default: () => {
+          return false
+        }
+      },
       isSingle: {
         type: Boolean,
         default: () => {
@@ -165,6 +175,14 @@
         }
         this.$emit('handleCurrentChange', val)
 
+      },
+      //保存的回调事件
+      onSave(){
+        this.$emit('onSave')
+      },
+      //取消的回调事件
+      onCancel(){
+        this.$emit('onCancel')
       }
     }
   }

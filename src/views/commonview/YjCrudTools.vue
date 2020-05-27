@@ -3,20 +3,22 @@
   <div class="head-container">
     <div v-if="searchToggle">
       <!-- 上方搜素的插槽 -->
-      <slot name="top"/>
+      <slot name="top" v-show="isShowForm"/>
     </div>
     <div class="crud-opts">
 
     <span class="crud-opts-left">
       <!--左侧插槽-->
-      <slot name="left"/>
+      <slot name="left" v-show="isShowForm"/>
       <el-button
+        v-show="!isShowForm"
         class="filter-item"
         size="mini"
         type="primary"
         icon="el-icon-plus"
         @click="onAdd">新增 </el-button>
       <el-button
+        v-show="!isShowForm"
         :disabled="selectDatas.length !== 1"
         class="filter-item"
         size="mini"
@@ -24,6 +26,7 @@
         icon="el-icon-edit"
         @click="onEdit"> 修改</el-button>
       <el-button
+        v-show="!isShowForm"
         :disabled="selectDatas.length === 0"
         @click="onDel"
         slot="reference"
@@ -32,18 +35,33 @@
         icon="el-icon-delete"
         size="mini"> 删除 </el-button>
       <el-button
+        v-show="!isShowForm"
         class="filter-item"
         size="mini"
         type="warning"
         icon="el-icon-download">导出</el-button>
-        <el-button-group v-for="(item, index) in rowsList" :key="index">
+        <el-button
+          v-show="isShowForm"
+          slot="reference"
+          class="filter-item"
+          type="danger"
+          icon="el-icon-delete"
+          @click="onSave"
+          size="mini"> 保存 </el-button>
 
-</el-button-group>
+          <el-button
+            @click="onCancel"
+            v-show="isShowForm"
+            slot="reference"
+            class="filter-item"
+            type="warning"
+            icon="el-icon-delete"
+            size="mini"> 取消 </el-button>
       <!--        右侧的插槽 适合放一些按钮-->
-      <slot name="right"/>
+      <slot name="right" v-show="isShowForm"/>
 
     </span>
-      <div class="crud-opts-right">
+      <div class="crud-opts-right" v-show="!isShowForm">
         <el-input size="mini" placeholder="搜索" v-model="input" @input="searchContent" clearable
                   prefix-icon="el-icon-search" style="width: auto;margin-right: 5px"/>
         <el-button-group>
@@ -94,7 +112,12 @@
   export default {
     name: "YjCrudTools",
     props: {
-
+      isShowForm: {
+        type: Boolean,
+        default: () => {
+          return false
+        }
+      },
       // 表头数据
       rowHeader: {
         type: Array,
@@ -179,6 +202,14 @@
         this.$emit('onDel')
       },
       //导出
+      //保存的回调事件
+      onSave(){
+        this.$emit('onSave')
+      },
+      //取消的回调事件
+      onCancel(){
+        this.$emit('onCancel')
+      }
     }
   }
 </script>
