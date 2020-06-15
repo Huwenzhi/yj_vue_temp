@@ -7,7 +7,7 @@
       <slot name="right" slot="right" v-show="!isShowForm"/>
     </yj-crud-tools>
     <div :is-show-form="isShowForm">
-      <slot name="bottom"/>
+      <slot name="maincard"/>
     </div>
 
     <yj-table :is-show-form="isShowForm" :is-border="isBorder" :is-stripe="isStripe" :search-content="searchContent" :table-size="tableSize"

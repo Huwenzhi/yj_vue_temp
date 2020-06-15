@@ -1,21 +1,26 @@
 <template>
-    <yj-crud-table  @onRefresh="onRefresh" :table-size="mini" :is-show-row-do-something="true"
+  <div>
+    <yj-crud-table :is-show-form="showForm"  @onRefresh="onRefresh" :table-size="mini" :is-show-row-do-something="true"
                    :is-can-sort="true" :row-header="heards" :data="tableData" :is-show-index="true" @onAdd="onAdd"
                    :is-show-selection="true" @onSave="onSave" @onCancel="onCancel">
-        <input slot="top"></input>
-        <yj-search-tools  v-show="!showForm" slot="left">
-            <el-button slot="search">测试插槽</el-button>
-        </yj-search-tools>
-      <input slot="bottom" v-show="showForm"></input>
+      <input slot="top"></input>
+      <yj-search-tools  v-show="!showForm" slot="left">
+        <el-button slot="search">测试插槽</el-button>
+      </yj-search-tools>
     </yj-crud-table>
+    <yj-save-tools/>
+  </div>
+
 </template>
 
 <script>
     import YjCrudTable from "../commonview/YjCrudTable";
     import YjSearchTools from "../commonview/YjSearchTools";
+    import YjSaveTools from "@/views/commonview/YjSaveTools";
+    import Formtest from "@/views/newslot/formtest";
     export default {
         name: "index",
-        components: {YjSearchTools, YjCrudTable},
+        components: {Formtest, YjSaveTools, YjSearchTools, YjCrudTable},
         data() {
             return {
                 showForm:false,
