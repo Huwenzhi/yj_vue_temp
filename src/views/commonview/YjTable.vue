@@ -1,17 +1,32 @@
 <!--base 表格的封装-->
+<!--height="824px"-->
 <template>
-  <el-table v-show="!isShowForm" ref="multipleTable" :border="isBorder" :stripe="isStripe" :size="tableSize" :data="tableDataCon"
-            @selection-change="handleSelectionChange"
-            highlight-current-row
-            @current-change="handleCurrentChange"
-            default-expand-all
-            row-key="id"
-            :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-    <el-table-column type="selection" width="50" v-if='isShowSelection&&!isSingle'></el-table-column>
-    <el-table-column type="index" width="50" label="序号" v-if='isShowIndex'></el-table-column>
+  <el-table
+    height="824"
+    :data="tableDataCon"
+    @selection-change="handleSelectionChange"
+    highlight-current-row
+    @current-change="handleCurrentChange"
+    @cell-dblclick="twoClick"
+    @row-click="rowClick"
+    default-expand-all
+    row-key="id"
+    :row-style="{ height: '30px' }"
+    :cell-style="{ padding: '0px' }"
+    :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" >
+    <el-table-column type="selection" width="50" v-if="isShowSelection && !isSingle"></el-table-column>
+    <el-table-column type="index" width="50" label="序号" v-if="isShowIndex"></el-table-column>
 
-    <el-table-column v-for="(col,index) in rowHeader" :key="index" :prop="col.prop" :label="col.label"
-                     align="center" :width="col.width" :type="col.type" :sortable=isCanSort>
+    <el-table-column
+      show-overflow-tooltip
+      v-for="(col, index) in rowHeader"
+      :key="index"
+      :prop="col.prop"
+      :label="col.label"
+      align="center"
+      :width="col.width"
+      :type="col.type"
+      :sortable="isCanSort">
       <template slot-scope="scope">
         <div slot="reference" class="name-wrapper" style="display: inline-block">
           <ex-slot v-if="col.render" :render="col.render" :row="scope.row" :index="scope.$index"
@@ -28,116 +43,132 @@
         <!--                    </div>-->
         <!--                </el-popover>-->
       </template>
-
     </el-table-column>
-    <el-table-column v-if='isShowRowDoSomething' align="center" label="操作">
+    <el-table-column v-if="isShowRowDoSomething" align="center" label="操作">
       <template slot-scope="scope">
-        <el-button
-          icon="el-icon-edit"
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)"></el-button>
-        <el-button
-          icon="el-icon-delete"
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)"></el-button>
+        <el-button icon="el-icon-edit" size="mini" @click="handleEdit(scope.$index, scope.row)"></el-button>
+        <el-button icon="el-icon-delete" size="mini" type="danger"
+                   @click="handleDelete(scope.$index, scope.row)"></el-button>
       </template>
     </el-table-column>
   </el-table>
 </template>
 
 <script>
-  export default {
-    name: "YjTable",
-
-
+  var exSlot = {
+    functional: true,
     props: {
-      isShowForm: {
-        type: Boolean,
+      row: Object,
+      render: Function,
+      index: Number,
+      column: {
+        type: Object,
+        default: null
+      }
+    },
+    render: (h, data) => {
+      const params = {
+        row: data.props.row,
+        index: data.props.index
+      };
+      if (data.props.column) {
+        params.column = data.props.column;
+      }
+      return data.props.render(h, params);
+    }
+  };
+  export default {
+    name: 'YjTable',
+    components: {
+      'ex-slot': exSlot
+    },
+    props: {
+      height: {
+        type: String,
         default: () => {
-          return false
+          return '';
         }
       },
-      isSingle:{
+      isSingle: {
         type: Boolean,
         default: () => {
-          return true
+          return true;
         }
       },
       // 表格数据
       data: {
         type: Array,
         default: () => {
-          return []
+          return [];
         }
       },
       // 表头数据
       rowHeader: {
         type: Array,
         default: () => {
-          return []
+          return [];
         }
       },
       //显示序号
       isShowIndex: {
         type: Boolean,
         default: () => {
-          return false
+          return false;
         }
       }, //显示序号
       isShowSelection: {
         type: Boolean,
         default: () => {
-          return false
+          return false;
         }
       },
       //是否斑马显示
       isStripe: {
         type: Boolean,
         default: () => {
-          return false
+          return false;
         }
       },
       //是否带边框
       isBorder: {
         type: Boolean,
         default: () => {
-          return false
+          return false;
         }
       },
       //是否支持排序
       isCanSort: {
         type: Boolean,
         default: () => {
-          return false
+          return false;
         }
       },
       //表格的大小
       tableSize: {
         type: String,
         default: () => {
-          return 'medium'
+          return 'medium';
         }
       },
       //是否显示单行操作
       isShowRowDoSomething: {
         type: Boolean,
         default: () => {
-          return false
+          return false;
         }
       },
       //过滤的内容
       searchContent: {
         type: String,
         default: () => {
-          return ''
+          return '';
         }
       }
     },
     computed: {
       tableDataCon() {
-        const search = this.searchContent
-        const that = this
+        const search = this.searchContent;
+        const that = this;
         if (search) {
           // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
           // 注意： filter() 不会对空数组进行检测。
@@ -152,74 +183,84 @@
             return Object.keys(data).some(key => {
               // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
               // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
-              return String(data[key]).toLowerCase().indexOf(search) > -1
-            })
-          })
+              return (
+                String(data[key])
+                  .toLowerCase()
+                  .indexOf(search) > -1
+              );
+            });
+          });
         }
 
-        return this.tdata
+        return this.tdata;
         // return  this.isPaging?((this.tdata==null||this.tdata==undefined) ?this.tdata :this.tdata.slice((this.tcurrentPage - 1) * this.tpageSize, this.tcurrentPage * this.tpageSize) ):this.tdata
-      },
-
+      }
     },
     data() {
       return {
-        searchContent: '',//搜素的内容
-        tdata: [],//表体的数据
-      }
+        // searchContent: '',//搜素的内容
+        tdata: [] //表体的数据
+      };
     },
     watch: {
       //接收传递过来的数据
       data(val) {
-        this.tdata = val
+        this.tdata = val;
       },
       //接收搜索的内容
       searchContent(val) {
-        this.searchContent = val
+        this.searchContent = val;
+      },
+      height(val){
+        console.log(val,'-=================23232222')
       }
     },
     mounted() {
-      this.init()
+      this.init();
     },
     methods: {
       init() {
-        this.tdata = this.data
+        this.tdata = this.data;
       },
       //模糊查询对字体进行加粗变红显示
       format(val) {
-        let data= JSON.stringify(val)
+        let data = JSON.stringify(val);
         if (data != undefined && data != '' && data != null && data != 'null' && data.indexOf(this.searchContent) !== -1 && this.searchContent !== '') {
-          let string = JSON.parse(data)
-          return string.replace(this.searchContent, ' <strong><font color="red">' + this.searchContent + '</font> </strong>')
+          let string = JSON.parse(data);
+          return string.replace(this.searchContent, ' <strong><font color="red">' + this.searchContent + '</font> </strong>');
         } else {
-          return val
+          return val;
         }
-
       },
       //单行编辑
-      handleEdit(index,val){
-        this.$emit('handleEdit',index,val)
+      handleEdit(index, val) {
+        this.$emit('handleEdit', index, val);
       },
       //单行删改
-      handleDelete(index,val){
-        this.$emit('handleDelete',index,val)
+      handleDelete(index, val) {
+        this.$emit('handleDelete', index, val);
       },
       //多选
       handleSelectionChange(val) {
-        this.$emit('handleSelectionChange',val)
+        this.$emit('handleSelectionChange', val);
       },
       //单选
-      handleCurrentChange(val){
+      handleCurrentChange(val) {
         // if (!this.isSingle){
         //     this.$refs.multipleTable.toggleRowSelection(val)
         // }
-        this.$emit('handleCurrentChange',val)
-
+        this.$emit('handleCurrentChange', val);
+      },
+      //双击
+      twoClick(val) {
+        this.$emit('twoClick', val);
+      },
+      //单击
+      rowClick(val) {
+        this.$emit('rowClick', val);
       }
     }
-  }
+  };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

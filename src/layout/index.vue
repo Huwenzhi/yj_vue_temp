@@ -3,11 +3,13 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
     <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
+      <div ref="topref" :class="{'fixed-header':fixedHeader}">
         <navbar />
-        <tags-view/>
+        <tags-view />
       </div>
-      <app-main />
+      <div :style="{'margin-top':topHeight+'px'}" ref="getheight">
+        <app-main/>
+      </div>
     </div>
   </div>
 </template>
@@ -25,6 +27,45 @@ export default {
     TagsView
   },
   mixins: [ResizeMixin],
+  data(){
+    return{
+      topHeight:'0px'
+    }
+  },
+  beforeMount() {
+  },
+  mounted() {
+    window.onresize = () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth
+        // that.screenWidth =
+        console.log('width=',window.screenWidth)
+      })()
+    }
+    window.onresize = () => {
+      return (() => {
+        window.screenHeight= document.body.clientHeight
+        // that.screenWidth =
+        console.log('height=',window.screenHeight)
+      })()
+    }
+
+    this.$nextTick(() => { // 页面渲染完成后的回调
+
+      // 获取高度值 （内容高+padding+边框）
+      let height= this.$refs.topref.offsetHeight;
+
+      // 获取元素样式值 （存在单位）
+      let height1 = window.getComputedStyle(this.$refs.topref).height;
+
+      //获取元素内联样式值（非内联样式无法获取）
+      let height2 = this.$refs.topref.style.height;
+      this.topHeight=height
+      sessionStorage.setItem('top',height)
+
+      console.log(height,'--top--',height1,'---',height2,'----',document.documentElement.clientHeight,'---', window.innerHeight)
+    })
+  },
   computed: {
     sidebar() {
       return this.$store.state.app.sidebar;
@@ -50,7 +91,7 @@ export default {
   methods: {
     handleClickOutside() {
       this.$store.dispatch("app/closeSideBar", { withoutAnimation: false });
-    }
+    },
   }
 };
 </script>

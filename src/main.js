@@ -11,7 +11,13 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+import VScrollLock from 'v-scroll-lock'
 
+Vue.use(VScrollLock, {
+  bodyScrollOptions: {
+    reserveScrollBarGap: true,
+  },
+})
 import '@/icons' // icon
 import '@/permission' // permission control
 

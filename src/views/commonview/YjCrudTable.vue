@@ -1,16 +1,22 @@
 <template>
   <div>
-    <yj-crud-tools :is-show-form="isShowForm" @onAdd="onAdd" @onEdit="onEdit" @onDel="onDel" :select-datas="selectDatas" :row-header="rowHeader"
-                   @searchContentSend="searchContentRec" @filterHeard="filterHeard" @onRefresh="onRefresh" @onSave="onSave" @onCancel="onCancel">
-      <slot name="top" slot="top" v-show="!isShowForm"/>
-      <slot name="left" slot="left" v-show="isShowForm"/>
-      <slot name="right" slot="right" v-show="!isShowForm"/>
-    </yj-crud-tools>
+    <div ref="topRef" v-scroll-lock="true">
+      <yj-crud-tools :is-show-form="isShowForm" @onAdd="onAdd" @onEdit="onEdit" @onDel="onDel"
+                     :select-datas="selectDatas" :row-header="rowHeader"
+                     @searchContentSend="searchContentRec" @filterHeard="filterHeard" @onRefresh="onRefresh"
+                     @onSave="onSave" @onCancel="onCancel">
+        <slot name="top" slot="top" v-show="!isShowForm"/>
+        <slot name="left" slot="left" v-show="isShowForm"/>
+        <slot name="right" slot="right" v-show="!isShowForm"/>
+      </yj-crud-tools>
+    </div>
+
     <div :is-show-form="isShowForm">
       <slot name="maincard"/>
     </div>
 
-    <yj-table :is-show-form="isShowForm" :is-border="isBorder" :is-stripe="isStripe" :search-content="searchContent" :table-size="tableSize"
+    <yj-table :height="height" :is-show-form="isShowForm" :is-border="isBorder" :is-stripe="isStripe"
+              :search-content="searchContent" :table-size="tableSize"
               :is-show-row-do-something="isShowRowDoSomething" :is-can-sort="isCanSort"
               :row-header="rowHeaderSend" :data="data" :is-show-index="isShowIndex"
               :is-show-selection="isShowSelection" ref="yjtable" @handleEdit="handleEdit" @handleDelete="handleDelete"
@@ -108,18 +114,39 @@
         searchContent: '',//传递过来的模糊查询的内容
         rowHeaderSend: [],//转发的头部
         selectDatas: [],//选中的数据
+        heightall: '',
+        height: ''
       }
     },
     watch: {
-      data(val){
-        this.$nextTick(()=>{
-          this.selectDatas=[]
+      data(val) {
+        this.$nextTick(() => {
+          this.selectDatas = []
         })
 
       }
     },
+    created() {
+      this.$nextTick(() => {
+        // 获取高度值 （内容高+padding+边框）
+        let height = this.$refs.topRef.offsetHeight;
+        this.height = (window.innerHeight - height-sessionStorage.getItem('top')) + 'px'
+        console.log(this.height,'---height--',height)
+      })
+    },
     mounted() {
+      window.onresize = () => {
+        return (() => {
+          window.screenHeight= document.body.clientHeight
+          // that.screenWidth =
+          console.log('height=',window.screenHeight)
+          localStorage.
+          this.height = (window.screenHeight - height-sessionStorage.getItem('top')) + 'px'
+        })()
+      }
+
       this.init()
+
     },
     methods: {
       //拦截转发头信息
@@ -141,7 +168,7 @@
       },
       //新增
       onAdd() {
-        this.$emit('onAdd',this.selectDatas)
+        this.$emit('onAdd', this.selectDatas)
       },
       //新增
       onEdit() {
@@ -177,11 +204,11 @@
 
       },
       //保存的回调事件
-      onSave(){
+      onSave() {
         this.$emit('onSave')
       },
       //取消的回调事件
-      onCancel(){
+      onCancel() {
         this.$emit('onCancel')
       }
     }
@@ -189,5 +216,8 @@
 </script>
 
 <style scoped>
-
+  .fixed-header {
+    position: fixed;
+   margin-top: 200px;
+  }
 </style>

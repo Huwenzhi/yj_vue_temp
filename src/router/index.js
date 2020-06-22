@@ -95,7 +95,12 @@ export const constantRoutes = [
                 name: 'slot',
                 component: () => import('@/views/newslot/index'),
                 meta: {title: '插槽', icon: 'tree'}
-            },
+            },{
+                path: 'treetable',
+                name: 'treetable',
+                component: () => import('@/views/treetable/treetable'),
+                meta: {title: '树表', icon: 'tree'}
+            }
 
         ]
     },

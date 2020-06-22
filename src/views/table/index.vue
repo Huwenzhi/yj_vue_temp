@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <el-table
+      height="864"
       v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
