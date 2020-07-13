@@ -8,6 +8,7 @@
     </el-input>
 
     <el-tree
+      @node-click="handleNodeClick"
       class="filter-tree"
       :data="treeData"
       :props="defaultProps"
@@ -31,6 +32,9 @@
       filterNode(value, data) {
         if (!value) return true;
         return data.label.indexOf(value) !== -1;
+      },
+      handleNodeClick(data){
+        this.$emit('handleNodeClick',data)
       }
     },
     data() {
@@ -41,7 +45,8 @@
           label: 'label'
         }
       };
-    }
+    },
+
 
   }
 </script>

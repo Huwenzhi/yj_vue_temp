@@ -13,6 +13,9 @@ import store from './store'
 import router from './router'
 import VScrollLock from 'v-scroll-lock'
 
+import formCreate, {maker} from '@form-create/element-ui'
+Vue.use(formCreate);
+
 Vue.use(VScrollLock, {
   bodyScrollOptions: {
     reserveScrollBarGap: true,

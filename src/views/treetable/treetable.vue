@@ -1,5 +1,5 @@
 <template>
-  <yj-tree-table :tree-data="data" :span='5' :table-data="tableData" :table-header="headers"/>
+  <yj-tree-table :tree-data="data" :span='4' :table-data="tableData" :table-header="headers"/>
 </template>
 
 <script>
@@ -52,10 +52,10 @@
           }]
         }],
         headers: [
-          {prop: "date", label: "日期", width: '500px'},
-          {prop: "name", label: "名称", width: '500px'},
-          {prop: "address", label: "地址", width: '500px'},
-          {prop: "address2", label: "地址2", width: '500px'}
+          {prop: "date", label: "日期"},
+          {prop: "name", label: "名称"},
+          {prop: "address", label: "地址"},
+          {prop: "address2", label: "地址2"}
         ],
         tableData: [
           {

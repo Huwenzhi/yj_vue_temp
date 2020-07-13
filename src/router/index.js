@@ -100,6 +100,26 @@ export const constantRoutes = [
                 name: 'treetable',
                 component: () => import('@/views/treetable/treetable'),
                 meta: {title: '树表', icon: 'tree'}
+            },{
+                path: 'newtabletest',
+                name: 'newtabletest',
+                component: () => import('@/views/newtabletest/newtabletest'),
+                meta: {title: '别人的表', icon: 'tree'}
+            },{
+                path: 'formcreat',
+                name: 'formcreat',
+                component: () => import('@/views/formcreat/formcreat'),
+                meta: {title: '表单', icon: 'tree'}
+            },{
+                path: 'movetree',
+                name: 'movetree',
+                component: () => import('@/views/movetree/movetree'),
+                meta: {title: '拖动的树', icon: 'tree'}
+            },{
+                path: 'skeleton',
+                name: 'skeleton',
+                component: () => import('@/views/skeleton/skeleton'),
+                meta: {title: '骨架屏', icon: 'tree'}
             }
 
         ]

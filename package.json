@@ -30,6 +30,8 @@
     "babel-eslint": "10.0.1",
     "babel-jest": "23.6.0",
     "v-scroll-lock":"^1.2.0",
+    "element-datatable":"^1.1.13",
+    "@form-create/element-ui": "^1.0.16",
     "connect": "3.6.6"
   },
   "devDependencies": {
